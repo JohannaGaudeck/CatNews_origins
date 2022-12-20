@@ -7,5 +7,7 @@ module com.ode22.catnews_origins {
     requires com.fasterxml.jackson.databind;
 
     opens com.ode22.catnews_origins to javafx.fxml;
+    opens com.ode22.catnews_origins.Dto to javafx.fxml;
     exports com.ode22.catnews_origins;
+    exports com.ode22.catnews_origins.Dto;
 }

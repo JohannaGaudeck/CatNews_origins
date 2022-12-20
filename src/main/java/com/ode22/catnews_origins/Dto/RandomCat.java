@@ -1,8 +1,12 @@
 package com.ode22.catnews_origins.Dto;
 
+
 public class RandomCat {
 
-    String id;
+    private String id;
+    private String url;
+    private int width;
+    private int height;
 
     public String getId() {
         return id;
@@ -35,8 +39,4 @@ public class RandomCat {
     public void setHeight(int height) {
         this.height = height;
     }
-
-    String url;
-    int width;
-    int height;
 }

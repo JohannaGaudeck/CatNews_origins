@@ -70,7 +70,7 @@ public class CatGuiController {
         System.out.println("Save pressed");
         CatClient catClient = new CatClient();
         try {
-            imageCat.setImage(new Image(catClient.getRandomCat()));
+            imageCat.setImage(new Image(catClient.getRandomCat().getUrl()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
