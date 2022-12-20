@@ -2,6 +2,7 @@ package com.ode22.catnews_origins.Client;
 
 import java.io.*;
 import java.net.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CatClient
 {
@@ -28,7 +29,6 @@ public class CatClient
         stream.read(b);
         System.out.println(con.getResponseMessage() + con.getContent());
         String charResponse = "";
-
 
         for (byte by : b) {
             charResponse = charResponse + (char) by;
