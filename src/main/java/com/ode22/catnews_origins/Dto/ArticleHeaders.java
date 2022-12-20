@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ArticleHeaders {
-    Map<String, Integer> meta;
+    Map<String, Object> meta;
     List<ArticleHeader> ergebnisse;
 
-    public Map<String, Integer> getMeta() {
+    public Map<String, Object> getMeta() {
         return meta;
     }
 
-    public void setMeta(Map<String, Integer> meta) {
+    public void setMeta(Map<String, Object> meta) {
         this.meta = meta;
     }
 

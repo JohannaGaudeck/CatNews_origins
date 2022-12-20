@@ -48,9 +48,9 @@ public class CatGuiController implements Initializable {
     private Label lableTitle;
 
     @FXML
-    private ListView<ArticleHeader> listviewAllArticles;
+    private ListView<String> listviewAllArticles;
 
-    ObservableList<ArticleHeader> articleHeaderList = FXCollections.observableArrayList();
+    ObservableList<String> articleHeaderList = FXCollections.observableArrayList();
 
     @FXML
     private ListView<?> listviewSelectedArticles;
@@ -70,10 +70,11 @@ public class CatGuiController implements Initializable {
     @FXML
     void onSearch(ActionEvent event){
         System.out.println("Search pressed");
+        articleHeaderList.clear();
         ApaClient apaClient = new ApaClient();
         listviewAllArticles.setItems(articleHeaderList);
         try {
-            articleHeaderList.addAll(apaClient.getArticleHeaders(txtTitel.getText(), 10).getErgebnisse());
+            apaClient.getArticleHeaders(txtTitel.getText(), 10).getErgebnisse().forEach(articleHeader -> articleHeaderList.add(articleHeader.toString()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

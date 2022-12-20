@@ -114,5 +114,8 @@ public class ArticleHeader {
         this.emittent = emittent;
     }
 
-
+    @Override
+    public String toString() {
+        return titel  + "  \n"+ datum + " " + zeit;
+    }
 }
