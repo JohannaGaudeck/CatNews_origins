@@ -1,6 +1,10 @@
 package com.ode22.catnews_origins;
 
+import com.ode22.catnews_origins.Client.ApaClient;
 import com.ode22.catnews_origins.Client.CatClient;
+import com.ode22.catnews_origins.Dto.ArticleHeader;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -44,7 +48,9 @@ public class CatGuiController implements Initializable {
     private Label lableTitle;
 
     @FXML
-    private ListView<?> listviewAllArticles;
+    private ListView<ArticleHeader> listviewAllArticles;
+
+    ObservableList<ArticleHeader> articleHeaderList = FXCollections.observableArrayList();
 
     @FXML
     private ListView<?> listviewSelectedArticles;
@@ -64,10 +70,19 @@ public class CatGuiController implements Initializable {
     @FXML
     void onSearch(ActionEvent event){
         System.out.println("Search pressed");
+        ApaClient apaClient = new ApaClient();
+        listviewAllArticles.setItems(articleHeaderList);
+        try {
+            articleHeaderList.addAll(apaClient.getArticleHeaders(txtTitel.getText(), 10).getErgebnisse());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @FXML
     void onSave(ActionEvent event){
+
         System.out.println("Save pressed");
     }
 
@@ -88,5 +103,8 @@ public class CatGuiController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
+
+
 }
