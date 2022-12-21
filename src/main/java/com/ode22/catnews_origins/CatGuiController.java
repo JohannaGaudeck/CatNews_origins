@@ -3,6 +3,7 @@ package com.ode22.catnews_origins;
 import com.ode22.catnews_origins.Client.CatClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -13,9 +14,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
-public class CatGuiController {
+public class CatGuiController implements Initializable {
     @FXML
     private Button btnSave;
 
@@ -61,21 +64,20 @@ public class CatGuiController {
     @FXML
     void onSearch(ActionEvent event){
         System.out.println("Search pressed");
-
     }
 
     @FXML
     void onSave(ActionEvent event){
-
         System.out.println("Save pressed");
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         CatClient catClient = new CatClient();
         try {
             imageCat.setImage(new Image(catClient.getRandomCat().getUrl()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
-
-
 }

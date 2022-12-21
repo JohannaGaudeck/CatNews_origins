@@ -11,7 +11,7 @@ import com.ode22.catnews_origins.Dto.RandomCat;
 public class CatClient
 {
 
-    public RandomCat getRandomCat() throws IOException, ProtocolException  {
+    public RandomCat getRandomCat() throws IOException {
 
         String host = "https://api.thecatapi.com/v1/images/search";
         URL url = new URL(host);
@@ -27,14 +27,14 @@ public class CatClient
         byte[] b = new byte[count];
 
         stream.read(b);
-        String charResponse = "";
+        StringBuilder charResponse = new StringBuilder();
 
         for (byte by : b) {
-            charResponse = charResponse + (char) by;
+            charResponse.append((char) by);
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
-        RandomCat randomCat = objectMapper.readValue(charResponse, new TypeReference<List<RandomCat>>() {
+        RandomCat randomCat = objectMapper.readValue(charResponse.toString(), new TypeReference<List<RandomCat>>() {
         }).get(0);
 
         con.disconnect();
