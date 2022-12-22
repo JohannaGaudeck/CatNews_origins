@@ -73,9 +73,18 @@ public class CatGuiController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //load cat image on startup
+        loadRandomCatImage(imageCat);
+    }
+
+    /**
+     * Loads a random cat image from thecatapi.com into a ImageView node.
+     * @param location the ImageView node into which the image is to be loaded.
+     */
+    public void loadRandomCatImage(ImageView location) {
         CatClient catClient = new CatClient();
         try {
-            imageCat.setImage(new Image(catClient.getRandomCat().getUrl()));
+            location.setImage(new Image(catClient.getRandomCat().getUrl()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

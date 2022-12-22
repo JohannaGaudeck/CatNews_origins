@@ -1,5 +1,8 @@
 package com.ode22.catnews_origins.Dto;
 
+/**
+ * Class for holding the image information returned from thecatapi.com to query requests.
+ */
 
 public class RandomCat {
 

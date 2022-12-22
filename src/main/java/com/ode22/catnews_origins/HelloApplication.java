@@ -11,7 +11,6 @@ import java.io.IOException;
 
 public class HelloApplication extends Application {
 
-    CatClient catClient = new CatClient();
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("cat-view.fxml"));
