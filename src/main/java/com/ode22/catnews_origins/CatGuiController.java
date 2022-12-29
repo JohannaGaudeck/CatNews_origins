@@ -1,16 +1,24 @@
 package com.ode22.catnews_origins;
 
+import com.ode22.catnews_origins.Client.CatClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class CatGuiController {
+import java.io.IOException;
+import java.net.URL;
+import java.util.Objects;
+import java.util.ResourceBundle;
+
+public class CatGuiController implements Initializable {
     @FXML
     private Button btnSave;
 
@@ -56,15 +64,29 @@ public class CatGuiController {
     @FXML
     void onSearch(ActionEvent event){
         System.out.println("Search pressed");
-
     }
 
     @FXML
     void onSave(ActionEvent event){
-
         System.out.println("Save pressed");
-
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        //load cat image on startup
+        loadRandomCatImage(imageCat);
+    }
 
+    /**
+     * Loads a random cat image from thecatapi.com into a ImageView node.
+     * @param location the ImageView node into which the image is to be loaded.
+     */
+    public void loadRandomCatImage(ImageView location) {
+        CatClient catClient = new CatClient();
+        try {
+            location.setImage(new Image(catClient.getRandomCat().getUrl()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
