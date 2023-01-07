@@ -4,13 +4,16 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.ode22.catnews_origins.Dto.Article;
 import com.ode22.catnews_origins.Dto.ArticleHeaders;
+import com.ode22.catnews_origins.Dto.Articles;
 import com.ode22.catnews_origins.Dto.RandomCat;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -42,6 +45,22 @@ public class ApaClient {
         URL url = null;
 
         url = new URL(HOST + "liste/?app=" + getKey() + "&query=" + search + "&anz=" + count );
+
+        // Converting the string into an object
+        return mapper.readValue(stringResponseFromURL(url), ArticleHeaders.class);
+    }
+
+
+
+    public Article getArticle(String articleKey) throws IOException {
+        URL url = null;
+        url = new URL(HOST + "aussendung?app=" + getKey() + "&schluessel=" + articleKey);
+
+        // Converting the string into an object
+        return mapper.readValue(stringResponseFromURL(url), Articles.class).getErgebnisse().get(0);
+    }
+
+    private String stringResponseFromURL(URL url) throws IOException {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
         con.setRequestMethod("GET");
@@ -49,19 +68,13 @@ public class ApaClient {
         con.setDoOutput(true);
         InputStream stream = null;
         stream = con.getInputStream();
-
         // Create byte array
         byte[] byteResponse = stream.readAllBytes();
+        con.disconnect();
+
 
         // Converting the byte array to a string
-        String charResponse = new String(byteResponse, StandardCharsets.UTF_8);
-
-        // Converting the string into an object
-        var articleHeaders = mapper.readValue(charResponse, ArticleHeaders.class);
-
-
-        con.disconnect();
-        return articleHeaders;
+        return new String(byteResponse, StandardCharsets.UTF_8);
     }
 
     /**

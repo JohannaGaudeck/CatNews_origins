@@ -3,9 +3,9 @@ package com.ode22.catnews_origins.Dto;
 import java.util.List;
 import java.util.Map;
 
-public class ArticleHeaders {
+public class Articles {
     Map<String, Object> meta;
-    List<ArticleHeader> ergebnisse;
+    List<Article> ergebnisse;
     String error;
 
     public Map<String, Object> getMeta() {
@@ -16,11 +16,11 @@ public class ArticleHeaders {
         this.meta = meta;
     }
 
-    public List<ArticleHeader> getErgebnisse() {
+    public List<Article> getErgebnisse() {
         return ergebnisse;
     }
 
-    public void setErgebnisse(List<ArticleHeader> ergebnisse) {
+    public void setErgebnisse(List<Article> ergebnisse) {
         this.ergebnisse = ergebnisse;
     }
 

@@ -2,7 +2,9 @@ package com.ode22.catnews_origins;
 
 import com.ode22.catnews_origins.Client.ApaClient;
 import com.ode22.catnews_origins.Client.CatClient;
+import com.ode22.catnews_origins.Dto.Article;
 import com.ode22.catnews_origins.Dto.ArticleHeader;
+import com.ode22.catnews_origins.Dto.ArticleHeaders;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,6 +25,10 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CatGuiController implements Initializable {
+
+    ApaClient apaClient = new ApaClient();
+    ArticleHeaders articleHeaders = new ArticleHeaders();
+    FileHandler fileHandler = new FileHandler();
     @FXML
     private Button btnSave;
 
@@ -71,10 +77,10 @@ public class CatGuiController implements Initializable {
     void onSearch(ActionEvent event){
         System.out.println("Search pressed");
         articleHeaderList.clear();
-        ApaClient apaClient = new ApaClient();
         listviewAllArticles.setItems(articleHeaderList);
         try {
-            apaClient.getArticleHeaders(txtTitel.getText(), 10).getErgebnisse().forEach(articleHeader -> articleHeaderList.add(articleHeader.toString()));
+            articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10);
+            articleHeaders.getErgebnisse().forEach(articleHeader -> articleHeaderList.add(articleHeader.toString()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -82,9 +88,13 @@ public class CatGuiController implements Initializable {
     }
 
     @FXML
-    void onSave(ActionEvent event){
-
+    void onSave(ActionEvent event) throws IOException {
         System.out.println("Save pressed");
+        //Get the article weblink from the selected list item
+        Article article = apaClient.getArticle(articleHeaders.getErgebnisse().get(listviewAllArticles.getSelectionModel().getSelectedIndex()).getSchluessel());
+
+        fileHandler.saveArticle(article);
+
     }
 
     @Override
