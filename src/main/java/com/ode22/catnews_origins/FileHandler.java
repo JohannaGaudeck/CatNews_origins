@@ -16,7 +16,7 @@ public class FileHandler {
     ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
     /**
-     * Writes (appends) the received article-object under "Zeitungsablage/{todaysDate}"
+     * Writes (appends) the received article-object under "Zeitungsablage/{todaysDate}.txt"
      * @param article the article that should be saved
      * @throws IOException in case a problem with opening or writing to the file happens.
      */

@@ -3,10 +3,13 @@ package com.ode22.catnews_origins.Dto;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *  Class identical to the response received by the apa-api on a 'article-GET' request.
+ *  Consists of metaData and a list of the received articles.
+ */
 public class Articles {
     Map<String, Object> meta;
     List<Article> ergebnisse;
-    String error;
 
     public Map<String, Object> getMeta() {
         return meta;
@@ -22,13 +25,5 @@ public class Articles {
 
     public void setErgebnisse(List<Article> ergebnisse) {
         this.ergebnisse = ergebnisse;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
     }
 }

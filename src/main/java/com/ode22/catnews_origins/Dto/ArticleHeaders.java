@@ -6,7 +6,6 @@ import java.util.Map;
 public class ArticleHeaders {
     Map<String, Object> meta;
     List<ArticleHeader> ergebnisse;
-    String error;
 
     public Map<String, Object> getMeta() {
         return meta;
@@ -22,13 +21,5 @@ public class ArticleHeaders {
 
     public void setErgebnisse(List<ArticleHeader> ergebnisse) {
         this.ergebnisse = ergebnisse;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
     }
 }
