@@ -10,10 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -90,11 +87,21 @@ public class CatGuiController implements Initializable {
     @FXML
     void onSave(ActionEvent event) throws IOException {
         System.out.println("Save pressed");
-        //Get the article weblink from the selected list item
-        Article article = apaClient.getArticle(articleHeaders.getErgebnisse().get(listviewAllArticles.getSelectionModel().getSelectedIndex()).getSchluessel());
+        //Getting the index of the current selected article
+        var selectedIndex = listviewAllArticles.getSelectionModel().getSelectedIndex();
+        if(selectedIndex == -1) {
 
-        fileHandler.saveArticle(article);
+            Alert alert = new Alert(Alert.AlertType.ERROR, "No article has been selected", ButtonType.OK);
+            alert.showAndWait();
 
+        } else {
+            //Gets the article 'schluessel' from the article-headers list and fetches the article from the api
+            Article article = apaClient.getArticle(articleHeaders.getErgebnisse().get(selectedIndex).getSchluessel());
+
+            //Saves the article in today's file
+            fileHandler.saveArticle(article);
+
+        }
     }
 
     @Override
