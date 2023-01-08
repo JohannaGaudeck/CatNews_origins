@@ -6,6 +6,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A class consisting of the relevant data received from the apa-api for a single article.
+ * Quite a few properties have been left out, since they were not used in our program.
+ * A few examples:
+ *  - Anhang
+ *  - EMITTENT
+ *  - UTL
+ *  - RUECKFRAGEHINWEIS
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Article {
     @JsonProperty("TITEL")

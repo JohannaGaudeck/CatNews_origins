@@ -9,9 +9,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 
+/**
+ * Class containing all methods interacting with files
+ */
 public class FileHandler {
     ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
+    /**
+     * Writes (appends) the received article-object under "Zeitungsablage/{todaysDate}"
+     * @param article the article that should be saved
+     * @throws IOException in case a problem with opening or writing to the file happens.
+     */
     public void saveArticle(Article article) throws IOException {
         File file = new File("Zeitungsablage/" + LocalDate.now() + ".txt");
         FileWriter myWriter = new FileWriter(file, true);
