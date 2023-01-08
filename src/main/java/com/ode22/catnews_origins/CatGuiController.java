@@ -89,9 +89,12 @@ public class CatGuiController implements Initializable {
         System.out.println("Save pressed");
         //Getting the index of the current selected article
         var selectedIndex = listviewAllArticles.getSelectionModel().getSelectedIndex();
+
+        //Checks that an article has been selected (otherwise returns -1
         if(selectedIndex == -1) {
 
-            Alert alert = new Alert(Alert.AlertType.ERROR, "No article has been selected", ButtonType.OK);
+            //In case no article was selected, we open an alert-window to inform the user
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "No article has been selected", ButtonType.OK);
             alert.showAndWait();
 
         } else {
