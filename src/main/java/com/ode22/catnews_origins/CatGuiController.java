@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -20,10 +21,19 @@ import java.util.ResourceBundle;
 
 public class CatGuiController implements Initializable {
     @FXML
+    private Button btnOpenTodaysFile;
+
+    @FXML
     private Button btnSave;
 
     @FXML
     private Button btnSearch;
+
+    @FXML
+    private DatePicker datePickerEndDate;
+
+    @FXML
+    private DatePicker datePickerStartDate;
 
     @FXML
     private HBox hboxMain;
@@ -38,6 +48,15 @@ public class CatGuiController implements Initializable {
     private Label lableDate;
 
     @FXML
+    private Label lableDate1;
+
+    @FXML
+    private Label lableDateTo;
+
+    @FXML
+    private Label lableMaxNumber;
+
+    @FXML
     private Label lableSelcArticles;
 
     @FXML
@@ -47,10 +66,10 @@ public class CatGuiController implements Initializable {
     private ListView<?> listviewAllArticles;
 
     @FXML
-    private ListView<?> listviewSelectedArticles;
+    private ListView<?> listviewSavedItems;
 
     @FXML
-    private TextField txtDate;
+    private TextField txtMaxArticles;
 
     @FXML
     private TextField txtTitel;
@@ -61,6 +80,11 @@ public class CatGuiController implements Initializable {
     @FXML
     private VBox vboxRight;
 
+    @FXML
+    void onOpenTodaysFile(ActionEvent event) {
+        System.out.println("Open pressed");
+
+    }
     @FXML
     void onSearch(ActionEvent event){
         System.out.println("Search pressed");
