@@ -34,7 +34,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="txtTitel">
+                  <TextField fx:id="txtTitel" maxWidth="300.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                      </VBox.margin>
@@ -44,7 +44,7 @@
                         <Insets left="10.0" top="10.0" />
                      </padding>
                   </Label>
-                  <TextField fx:id="txtMaxArticles" layoutX="20.0" layoutY="219.0">
+                  <TextField fx:id="txtMaxArticles" layoutX="20.0" layoutY="219.0" maxWidth="300.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                      </VBox.margin>
@@ -83,7 +83,7 @@
             </VBox>
             <VBox fx:id="vboxRight" HBox.hgrow="ALWAYS">
                <children>
-                  <ListView fx:id="listviewAllArticles" accessibleText="Articles" prefHeight="331.0" prefWidth="393.0">
+                  <ListView fx:id="listviewAllArticles" accessibleText="Articles" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                      </VBox.margin>
@@ -98,7 +98,7 @@
                         <Insets left="10.0" top="5.0" />
                      </padding>
                   </Label>
-                  <ListView fx:id="listviewSavedItems" prefHeight="200.0" prefWidth="404.0">
+                  <ListView fx:id="listviewSavedItems" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="5.0" left="10.0" right="10.0" />
                      </VBox.margin>
