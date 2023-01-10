@@ -40,3 +40,9 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Zeitungsablage ###
+Zeitungsablage/
+
+### APA API Key File ###
+src/main/resources/com/ode22/catnews_origins/config.properties
