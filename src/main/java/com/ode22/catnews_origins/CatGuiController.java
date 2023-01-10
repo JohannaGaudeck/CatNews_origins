@@ -27,10 +27,19 @@ public class CatGuiController implements Initializable {
     ArticleHeaders articleHeaders = new ArticleHeaders();
     FileHandler fileHandler = new FileHandler();
     @FXML
+    private Button btnOpenTodaysFile;
+
+    @FXML
     private Button btnSave;
 
     @FXML
     private Button btnSearch;
+
+    @FXML
+    private DatePicker datePickerEndDate;
+
+    @FXML
+    private DatePicker datePickerStartDate;
 
     @FXML
     private HBox hboxMain;
@@ -39,16 +48,25 @@ public class CatGuiController implements Initializable {
     private ImageView imageCat;
 
     @FXML
-    private Label lableCat;
+    private Label labelCat;
 
     @FXML
-    private Label lableDate;
+    private Label labelDate;
 
     @FXML
-    private Label lableSelcArticles;
+    private Label labelDate1;
 
     @FXML
-    private Label lableTitle;
+    private Label labelDateTo;
+
+    @FXML
+    private Label labelMaxNumber;
+
+    @FXML
+    private Label labelSelcArticles;
+
+    @FXML
+    private Label labelTitle;
 
     @FXML
     private ListView<String> listviewAllArticles;
@@ -56,10 +74,10 @@ public class CatGuiController implements Initializable {
     ObservableList<String> articleHeaderList = FXCollections.observableArrayList();
 
     @FXML
-    private ListView<?> listviewSelectedArticles;
+    private ListView<?> listviewSavedItems;
 
     @FXML
-    private TextField txtDate;
+    private TextField txtMaxArticles;
 
     @FXML
     private TextField txtTitel;
@@ -70,6 +88,11 @@ public class CatGuiController implements Initializable {
     @FXML
     private VBox vboxRight;
 
+    @FXML
+    void onOpenTodaysFile(ActionEvent event) {
+        System.out.println("Open pressed");
+
+    }
     @FXML
     void onSearch(ActionEvent event){
         System.out.println("Search pressed");
