@@ -1,14 +1,16 @@
 package com.ode22.catnews_origins;
 
+import com.ode22.catnews_origins.Client.ApaClient;
 import com.ode22.catnews_origins.Client.CatClient;
+import com.ode22.catnews_origins.Dto.Article;
+import com.ode22.catnews_origins.Dto.ArticleHeader;
+import com.ode22.catnews_origins.Dto.ArticleHeaders;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -20,6 +22,10 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CatGuiController implements Initializable {
+
+    ApaClient apaClient = new ApaClient();
+    ArticleHeaders articleHeaders = new ArticleHeaders();
+    FileHandler fileHandler = new FileHandler();
     @FXML
     private Button btnOpenTodaysFile;
 
@@ -63,7 +69,9 @@ public class CatGuiController implements Initializable {
     private Label labelTitle;
 
     @FXML
-    private ListView<?> listviewAllArticles;
+    private ListView<String> listviewAllArticles;
+
+    ObservableList<String> articleHeaderList = FXCollections.observableArrayList();
 
     @FXML
     private ListView<?> listviewSavedItems;
@@ -88,11 +96,38 @@ public class CatGuiController implements Initializable {
     @FXML
     void onSearch(ActionEvent event){
         System.out.println("Search pressed");
+        articleHeaderList.clear();
+        listviewAllArticles.setItems(articleHeaderList);
+        try {
+            articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10);
+            articleHeaders.getErgebnisse().forEach(articleHeader -> articleHeaderList.add(articleHeader.toString()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @FXML
-    void onSave(ActionEvent event){
+    void onSave(ActionEvent event) throws IOException {
         System.out.println("Save pressed");
+        //Getting the index of the current selected article
+        var selectedIndex = listviewAllArticles.getSelectionModel().getSelectedIndex();
+
+        //Checks that an article has been selected (otherwise returns -1
+        if(selectedIndex == -1) {
+
+            //In case no article was selected, we open an alert-window to inform the user
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "No article has been selected", ButtonType.OK);
+            alert.showAndWait();
+
+        } else {
+            //Gets the article 'schluessel' from the article-headers list and fetches the article from the api
+            Article article = apaClient.getArticle(articleHeaders.getErgebnisse().get(selectedIndex).getSchluessel());
+
+            //Saves the article in today's file
+            fileHandler.saveArticle(article);
+
+        }
     }
 
     @Override
@@ -112,5 +147,8 @@ public class CatGuiController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
+
+
 }
