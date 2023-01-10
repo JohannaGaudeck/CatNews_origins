@@ -42,25 +42,25 @@ public class CatGuiController implements Initializable {
     private ImageView imageCat;
 
     @FXML
-    private Label lableCat;
+    private Label labelCat;
 
     @FXML
-    private Label lableDate;
+    private Label labelDate;
 
     @FXML
-    private Label lableDate1;
+    private Label labelDate1;
 
     @FXML
-    private Label lableDateTo;
+    private Label labelDateTo;
 
     @FXML
-    private Label lableMaxNumber;
+    private Label labelMaxNumber;
 
     @FXML
-    private Label lableSelcArticles;
+    private Label labelSelcArticles;
 
     @FXML
-    private Label lableTitle;
+    private Label labelTitle;
 
     @FXML
     private ListView<?> listviewAllArticles;
