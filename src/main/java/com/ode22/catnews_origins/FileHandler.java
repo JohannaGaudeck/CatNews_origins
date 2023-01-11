@@ -29,6 +29,10 @@ public class FileHandler {
         myWriter.close();
     }
 
+    /**
+     * Opens the file saved under Zeitungsablage/{todaysDate}.txt
+     * @throws IOException
+     */
     public void openDailyFile() throws IOException {
         File file = new File("Zeitungsablage/" + LocalDate.now() + ".txt");
         if (!Desktop.isDesktopSupported()){
