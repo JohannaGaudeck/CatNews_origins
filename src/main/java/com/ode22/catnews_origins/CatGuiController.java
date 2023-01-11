@@ -91,6 +91,11 @@ public class CatGuiController implements Initializable {
     @FXML
     void onOpenTodaysFile(ActionEvent event) {
         System.out.println("Open pressed");
+        try {
+            fileHandler.openDailyFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
     @FXML
