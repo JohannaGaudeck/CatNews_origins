@@ -86,6 +86,7 @@ public class CatGuiController implements Initializable {
     private VBox vboxLeft;
 
     @FXML
+    
     private VBox vboxRight;
 
     @FXML
@@ -94,7 +95,10 @@ public class CatGuiController implements Initializable {
         try {
             fileHandler.openDailyFile();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+
+            //In case of an error, we open an alert-window to inform the user
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "The file could not be opened ", ButtonType.OK);
+            alert.showAndWait();
         }
 
     }
