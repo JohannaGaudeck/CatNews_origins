@@ -99,7 +99,11 @@ public class CatGuiController implements Initializable {
         articleHeaderList.clear();
         listviewAllArticles.setItems(articleHeaderList);
         try {
-            articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10);
+            if(txtMaxArticles.getText().isEmpty()){
+            articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10);}
+            else{
+                articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), Integer.parseInt(txtMaxArticles.getText()));
+            }
             articleHeaders.getErgebnisse().forEach(articleHeader -> articleHeaderList.add(articleHeader.toString()));
         } catch (IOException e) {
             throw new RuntimeException(e);
