@@ -21,11 +21,16 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+
+
 public class CatGuiController implements Initializable {
 
     ApaClient apaClient = new ApaClient();
     ArticleHeaders articleHeaders = new ArticleHeaders();
     FileHandler fileHandler = new FileHandler();
+
+    Datehandler datehandler = new Datehandler();
+
     @FXML
     private Button btnOpenTodaysFile;
 
@@ -96,6 +101,13 @@ public class CatGuiController implements Initializable {
     @FXML
     void onSearch(ActionEvent event){
         System.out.println("Search pressed");
+        System.out.println(datePickerEndDate.getValue());
+        System.out.println(datePickerEndDate.toString());
+
+
+        System.out.println(datehandler.get_unix_timestamp(String.valueOf(datePickerEndDate.getValue())));
+
+
         articleHeaderList.clear();
         listviewAllArticles.setItems(articleHeaderList);
         try {
