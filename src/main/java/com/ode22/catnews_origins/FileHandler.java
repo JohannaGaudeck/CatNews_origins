@@ -21,9 +21,9 @@ public class FileHandler {
      * @throws IOException in case a problem with opening or writing to the file happens.
      */
     public void saveArticle(Article article) throws IOException {
-        File file = new File("Zeitungsablage/" + LocalDate.now() + ".txt");
+        File file = new File("Zeitungsablage/" + LocalDate.now() + ".md");
         FileWriter myWriter = new FileWriter(file, true);
-        myWriter.write(mapper.writeValueAsString(article));
+        myWriter.write(article.toMarkDownString());
         myWriter.close();
     }
 }
