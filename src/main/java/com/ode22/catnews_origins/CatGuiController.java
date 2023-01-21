@@ -101,20 +101,47 @@ public class CatGuiController implements Initializable {
     @FXML
     void onSearch(ActionEvent event){
         System.out.println("Search pressed");
-        System.out.println(datePickerEndDate.getValue());
-        System.out.println(datePickerEndDate.toString());
 
-
-        System.out.println(datehandler.get_unix_timestamp(String.valueOf(datePickerEndDate.getValue())));
+        if (datePickerEndDate.getValue() == null){
+            System.out.println("Is null");
+        }
 
 
         articleHeaderList.clear();
         listviewAllArticles.setItems(articleHeaderList);
         try {
-            if(txtMaxArticles.getText().isEmpty()){
-            articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10);}
+            if(txtTitel.getText().isEmpty()){
+                //In case no title was selected, we open an alert-window to inform the user
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have to select a title", ButtonType.OK);
+                alert.showAndWait();
+
+            }
+           else if(txtMaxArticles.getText().isEmpty() ){
+                if (datePickerStartDate.getValue() == null && datePickerEndDate.getValue() == null){
+                    articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10);
+                } else if (datePickerStartDate.getValue() != null && datePickerEndDate.getValue() != null){
+                    long startDate = datehandler.get_unix_timestamp(String.valueOf(datePickerStartDate.getValue()));
+                    long endDate = datehandler.get_unix_timestamp(String.valueOf(datePickerEndDate.getValue()));
+                    articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10, startDate,endDate);
+                } else {
+                    //In case only one date was selected, we open an alert-window to inform the user
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have to select both dates", ButtonType.OK);
+                    alert.showAndWait();
+                }
+            }
             else{
-                articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), Integer.parseInt(txtMaxArticles.getText()));
+                if (datePickerStartDate.getValue() == null && datePickerEndDate.getValue() == null){
+                    articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(),  Integer.parseInt(txtMaxArticles.getText()));
+                }else if (datePickerStartDate.getValue() != null && datePickerEndDate.getValue() != null){
+                    long startDate = datehandler.get_unix_timestamp(String.valueOf(datePickerStartDate.getValue()));
+                    long endDate = datehandler.get_unix_timestamp(String.valueOf(datePickerEndDate.getValue()));
+                    articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(),  Integer.parseInt(txtMaxArticles.getText()), startDate, endDate);
+                }else {
+                    //In case only one date was selected, we open an alert-window to inform the user
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have to select both dates", ButtonType.OK);
+                    alert.showAndWait();
+                }
+
             }
             articleHeaders.getErgebnisse().forEach(articleHeader -> articleHeaderList.add(articleHeader.toString()));
         } catch (IOException e) {

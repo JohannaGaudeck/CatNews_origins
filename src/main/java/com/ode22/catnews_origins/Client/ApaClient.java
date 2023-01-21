@@ -46,6 +46,16 @@ public class ApaClient {
     }
 
 
+    public ArticleHeaders getArticleHeaders(String search, int count , long startDate, long endDate) throws IOException  {
+
+        URL url = null;
+
+        url = new URL(HOST + "liste/?app=" + getAuthenticationKey() + "&query=" + search.replace(" ", "+") + "&anz=" + count + "&von=" + startDate + "&bis=" + endDate );
+
+        // Converting the string into an object
+        return mapper.readValue(stringResponseFromURL(url), ArticleHeaders.class);
+    }
+
     /**
      * Fetches the corresponding article for the given articleKey
      *
