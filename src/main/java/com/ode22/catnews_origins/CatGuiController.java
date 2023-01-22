@@ -3,7 +3,6 @@ package com.ode22.catnews_origins;
 import com.ode22.catnews_origins.Client.ApaClient;
 import com.ode22.catnews_origins.Client.CatClient;
 import com.ode22.catnews_origins.Dto.Article;
-import com.ode22.catnews_origins.Dto.ArticleHeader;
 import com.ode22.catnews_origins.Dto.ArticleHeaders;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,7 +17,6 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CatGuiController implements Initializable {
@@ -74,7 +72,9 @@ public class CatGuiController implements Initializable {
     ObservableList<String> articleHeaderList = FXCollections.observableArrayList();
 
     @FXML
-    private ListView<?> listviewSavedItems;
+    private ListView<String> listviewSavedItems;
+
+    ObservableList<String> savedItemsList = FXCollections.observableArrayList();
 
     @FXML
     private TextField txtMaxArticles;
@@ -135,6 +135,12 @@ public class CatGuiController implements Initializable {
 
             //Saves the article in today's file
             fileHandler.saveArticle(article);
+
+            //Saves the article header in the savedItems List
+            savedItemsList.add(article.getTitel());
+
+            //Displays the saved articles
+            listviewSavedItems.setItems(savedItemsList);
 
         }
     }
