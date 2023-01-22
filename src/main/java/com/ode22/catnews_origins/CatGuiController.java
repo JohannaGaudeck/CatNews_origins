@@ -198,17 +198,11 @@ public class CatGuiController implements Initializable {
     }
 
     /**
-     * Loads a random cat image from thecatapi.com into a ImageView node.
+     * Starts a new thread that loads a random cat image from thecatapi.com into a ImageView node.
      * @param location the ImageView node into which the image is to be loaded.
      */
     public void loadRandomCatImage(ImageView location) {
-        CatClient catClient = new CatClient();
-        try {
-            location.setImage(new Image(catClient.getRandomCat().getUrl()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        new CatClient(location).start();
     }
 
 
