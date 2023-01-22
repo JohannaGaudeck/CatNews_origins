@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -102,10 +103,6 @@ public class CatGuiController implements Initializable {
     void onSearch(ActionEvent event){
         System.out.println("Search pressed");
 
-        if (datePickerEndDate.getValue() == null){
-            System.out.println("Is null");
-        }
-
 
         articleHeaderList.clear();
         listviewAllArticles.setItems(articleHeaderList);
@@ -146,6 +143,9 @@ public class CatGuiController implements Initializable {
             articleHeaders.getErgebnisse().forEach(articleHeader -> articleHeaderList.add(articleHeader.toString()));
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Maximum number of articles must contain numerical characters!", ButtonType.OK);
+            alert.showAndWait();
         }
 
     }

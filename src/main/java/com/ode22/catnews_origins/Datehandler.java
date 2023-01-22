@@ -16,7 +16,6 @@ public class Datehandler {
         this.year = Integer.parseInt(split[0]);
         this.month = Integer.parseInt(split[1]);
         this.day = Integer.parseInt(split[2]);
-
     }
 
 
@@ -35,7 +34,6 @@ public class Datehandler {
 
         // Get unix timestamp from Instant
         long epochSecond = instant.getEpochSecond();
-
 
         return epochSecond;
     }
