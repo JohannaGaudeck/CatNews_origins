@@ -67,4 +67,15 @@ public class Article {
     public void setWeblink(String weblink) {
         this.weblink = weblink;
     }
+
+    public String toMarkDownString() {
+        return "\n\r" +
+                "## " + this.titel + "\n\r" +
+                "_" + this.datum + " " + this.zeit +  "_\n\r" +
+                "\n" +
+                this.inhalt + "\n\r" +
+                "\n" +
+                "> Link: " + this.weblink +
+                "\n";
+    }
 }
