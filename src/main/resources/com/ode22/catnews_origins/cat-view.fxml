@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ode22.catnews_origins.CatGuiController">
+   <children>
+      <HBox fx:id="hboxMain" VBox.vgrow="ALWAYS">
+         <children>
+            <VBox fx:id="vboxLeft" HBox.hgrow="ALWAYS">
+               <children>
+                  <ImageView fx:id="imageCat" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </ImageView>
+                  <Label fx:id="labelCat" text="Cat news are good news">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="labelTitle" text="Title">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="txtTitel" maxWidth="300.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label fx:id="labelMaxNumber" layoutX="10.0" layoutY="187.0" text="Max. number of displayed articles">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="txtMaxArticles" layoutX="20.0" layoutY="219.0" maxWidth="300.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label fx:id="labelDate" text="Date">
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="labelDate1" layoutX="20.0" layoutY="254.0" text="From">
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <DatePicker fx:id="datePickerStartDate">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </DatePicker>
+                  <Label fx:id="labelDateTo" layoutX="10.0" layoutY="271.0" text="To">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <DatePicker fx:id="datePickerEndDate">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </DatePicker>
+                  <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#onSearch" text="Search">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox fx:id="vboxRight" HBox.hgrow="ALWAYS">
+               <children>
+                  <ListView fx:id="listviewAllArticles" accessibleText="Articles" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </ListView>
+                  <Button fx:id="btnSave" mnemonicParsing="false" onAction="#onSave" text="Save">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Label fx:id="labelSelcArticles" text="Saved items">
+                     <padding>
+                        <Insets left="10.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <ListView fx:id="listviewSavedItems" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                  </ListView>
+                  <Button fx:id="btnOpenTodaysFile" layoutX="20.0" layoutY="351.0" mnemonicParsing="false" onAction="#onOpenTodaysFile" text="Open today's file">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>
