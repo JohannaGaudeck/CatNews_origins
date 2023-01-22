@@ -16,14 +16,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+
 
 public class CatGuiController implements Initializable {
 
     ApaClient apaClient = new ApaClient();
     ArticleHeaders articleHeaders = new ArticleHeaders();
     FileHandler fileHandler = new FileHandler();
+
+    Datehandler datehandler = new Datehandler();
+
     @FXML
     private Button btnOpenTodaysFile;
 
@@ -105,13 +111,50 @@ public class CatGuiController implements Initializable {
     @FXML
     void onSearch(ActionEvent event){
         System.out.println("Search pressed");
+
+
         articleHeaderList.clear();
         listviewAllArticles.setItems(articleHeaderList);
         try {
-            articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10);
+            if(txtTitel.getText().isEmpty()){
+                //In case no title was selected, we open an alert-window to inform the user
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have to select a title", ButtonType.OK);
+                alert.showAndWait();
+
+            }
+           else if(txtMaxArticles.getText().isEmpty() ){
+                if (datePickerStartDate.getValue() == null && datePickerEndDate.getValue() == null){
+                    articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10);
+                } else if (datePickerStartDate.getValue() != null && datePickerEndDate.getValue() != null){
+                    long startDate = datehandler.get_unix_timestamp(String.valueOf(datePickerStartDate.getValue()));
+                    long endDate = datehandler.get_unix_timestamp(String.valueOf(datePickerEndDate.getValue()));
+                    articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10, startDate,endDate);
+                } else {
+                    //In case only one date was selected, we open an alert-window to inform the user
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have to select both dates", ButtonType.OK);
+                    alert.showAndWait();
+                }
+            }
+            else{
+                if (datePickerStartDate.getValue() == null && datePickerEndDate.getValue() == null){
+                    articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(),  Integer.parseInt(txtMaxArticles.getText()));
+                }else if (datePickerStartDate.getValue() != null && datePickerEndDate.getValue() != null){
+                    long startDate = datehandler.get_unix_timestamp(String.valueOf(datePickerStartDate.getValue()));
+                    long endDate = datehandler.get_unix_timestamp(String.valueOf(datePickerEndDate.getValue()));
+                    articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(),  Integer.parseInt(txtMaxArticles.getText()), startDate, endDate);
+                }else {
+                    //In case only one date was selected, we open an alert-window to inform the user
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have to select both dates", ButtonType.OK);
+                    alert.showAndWait();
+                }
+
+            }
             articleHeaders.getErgebnisse().forEach(articleHeader -> articleHeaderList.add(articleHeader.toString()));
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Maximum number of articles must contain numerical characters!", ButtonType.OK);
+            alert.showAndWait();
         }
 
     }
