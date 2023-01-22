@@ -1,10 +1,13 @@
-package com.ode22.catnews_origins;
+package com.ode22.catnews_origins.Handler;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 
-public class Datehandler {
+/**
+ * Class containing all logic to split any date provided by user into epoch seconds.
+ */
+public class DateHandler {
     private int year, month, day;
 
     /**

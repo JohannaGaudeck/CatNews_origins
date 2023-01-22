@@ -3,23 +3,22 @@ package com.ode22.catnews_origins;
 import com.ode22.catnews_origins.Client.ApaClient;
 import com.ode22.catnews_origins.Client.CatClient;
 import com.ode22.catnews_origins.Dto.Article;
-import com.ode22.catnews_origins.Dto.ArticleHeader;
 import com.ode22.catnews_origins.Dto.ArticleHeaders;
+import com.ode22.catnews_origins.Handler.DateHandler;
+import com.ode22.catnews_origins.Handler.FileHandler;
+import com.ode22.catnews_origins.Handler.ProblemHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CatGuiController implements Initializable {
@@ -27,7 +26,8 @@ public class CatGuiController implements Initializable {
     ApaClient apaClient = new ApaClient();
     ArticleHeaders articleHeaders = new ArticleHeaders();
     FileHandler fileHandler = new FileHandler();
-    Datehandler datehandler = new Datehandler();
+    DateHandler datehandler = new DateHandler();
+    ProblemHandler problemHandler = new ProblemHandler();
 
     @FXML
     private Button btnOpenTodaysFile;
@@ -96,14 +96,12 @@ public class CatGuiController implements Initializable {
 
     @FXML
     void onOpenTodaysFile(ActionEvent event) {
-        System.out.println("Open pressed");
         try {
             fileHandler.openDailyFile();
         } catch (IOException e) {
-
             //In case of an error, we open an alert-window to inform the user
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "The file could not be opened ", ButtonType.OK);
-            alert.showAndWait();
+            problemHandler.info("Unable to open file");
+            throw new RuntimeException(e);
         }
         //refreshes the random cat picture with a new one
         loadRandomCatImage(imageCat);
@@ -111,15 +109,12 @@ public class CatGuiController implements Initializable {
     }
     @FXML
     void onSearch(ActionEvent event){
-        System.out.println("Search pressed");
         articleHeaderList.clear();
         listviewAllArticles.setItems(articleHeaderList);
         try {
             if(txtTitel.getText().isEmpty()){
                 //In case no title was selected, we open an alert-window to inform the user
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have to select a title", ButtonType.OK);
-                alert.showAndWait();
-
+                problemHandler.info("No title selected");
             }
            else if(txtMaxArticles.getText().isEmpty() ){
                 if (datePickerStartDate.getValue() == null && datePickerEndDate.getValue() == null){
@@ -130,8 +125,7 @@ public class CatGuiController implements Initializable {
                     articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10, startDate,endDate);
                 } else {
                     //In case only one date was selected, we open an alert-window to inform the user
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have to select both dates", ButtonType.OK);
-                    alert.showAndWait();
+                    problemHandler.info("Start and end date must be set");
                 }
             }
             else{
@@ -143,17 +137,16 @@ public class CatGuiController implements Initializable {
                     articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(),  Integer.parseInt(txtMaxArticles.getText()), startDate, endDate);
                 }else {
                     //In case only one date was selected, we open an alert-window to inform the user
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have to select both dates", ButtonType.OK);
-                    alert.showAndWait();
+                    problemHandler.info("Start and end date must be set");
                 }
 
             }
             articleHeaders.getErgebnisse().forEach(articleHeader -> articleHeaderList.add(articleHeader.toString()));
         } catch (IOException e) {
+            problemHandler.error("A problem occured while fetching articles from APA");
             throw new RuntimeException(e);
         } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Maximum number of articles must contain numerical characters!", ButtonType.OK);
-            alert.showAndWait();
+            problemHandler.error("Maximum number of articles must contain numerical characters!");
         }
         //refreshes the random cat picture with a new one
         loadRandomCatImage(imageCat);
@@ -161,8 +154,7 @@ public class CatGuiController implements Initializable {
     }
 
     @FXML
-    void onSave(ActionEvent event) throws IOException {
-        System.out.println("Save pressed");
+    void onSave(ActionEvent event) {
         //Getting the index of the current selected article
         var selectedIndex = listviewAllArticles.getSelectionModel().getSelectedIndex();
 
@@ -170,21 +162,24 @@ public class CatGuiController implements Initializable {
         if(selectedIndex == -1) {
 
             //In case no article was selected, we open an alert-window to inform the user
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "No article has been selected", ButtonType.OK);
-            alert.showAndWait();
+            problemHandler.info("No article has been selected");
 
         } else {
-            //Gets the article 'schluessel' from the article-headers list and fetches the article from the api
-            Article article = apaClient.getArticle(articleHeaders.getErgebnisse().get(selectedIndex).getSchluessel());
+            try {
+                //Gets the article 'schluessel' from the article-headers list and fetches the article from the api
+                Article article = apaClient.getArticle(articleHeaders.getErgebnisse().get(selectedIndex).getSchluessel());
 
-            //Saves the article in today's file
-            fileHandler.saveArticle(article);
+                //Saves the article in today's file
+                fileHandler.saveArticle(article);
 
-            //Saves the article header in the savedItems List
-            savedItemsList.add(article.getTitel());
+                //Saves the article header in the savedItems List
+                savedItemsList.add(article.getTitel());
 
-            //Displays the saved articles
-            listviewSavedItems.setItems(savedItemsList);
+                //Displays the saved articles
+                listviewSavedItems.setItems(savedItemsList);
+            } catch (IOException e) {
+                problemHandler.error("An article related problem occured!");
+            }
 
         }
         //refreshes the random cat picture with a new one

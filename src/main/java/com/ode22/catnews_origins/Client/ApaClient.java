@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.ode22.catnews_origins.Dto.Article;
 import com.ode22.catnews_origins.Dto.ArticleHeaders;
 import com.ode22.catnews_origins.Dto.Articles;
+import com.ode22.catnews_origins.Handler.ProblemHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,6 +25,7 @@ import java.util.Properties;
 public class ApaClient {
 
     ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+    ProblemHandler problemHandler = new ProblemHandler();
 
 
     final String HOST = "https://www.ots.at/api/";
@@ -45,7 +49,16 @@ public class ApaClient {
         return mapper.readValue(stringResponseFromURL(url), ArticleHeaders.class);
     }
 
-
+    /**
+     * Makes a request from the APA api with the given data
+     *
+     * @param search Key Keywords which should be searched for
+     * @param count The number of elements that should be requested
+     * @param startDate earliest date of articles to fetch from APA
+     * @param endDate latest date of articles to fetch from APA
+     * @return the ArticleHeaders-object containing the received response from the APA api
+     * @throws IOException in case a problem with the connection to the api occurred
+     */
     public ArticleHeaders getArticleHeaders(String search, int count , long startDate, long endDate) throws IOException  {
 
         URL url = null;
@@ -112,7 +125,8 @@ public class ApaClient {
             return prop.getProperty("apa.key");
 
         } catch (IOException ex) {
-            throw new RuntimeException("There seems to be a problem with fetching the apa-api authentication key from the file. Please check that the file 'config.properties' is present at 'src/main/resources/com/ode22/catnews_origins/' and contains a property called 'apa.key'. If all of that is the case, please write a issue in our repository.");
+            problemHandler.error("There seems to be a problem with fetching the apa-api authentication key from the file. Please check that the file 'config.properties' is present at 'src/main/resources/com/ode22/catnews_origins/' and contains a property called 'apa.key'. If all of that is the case, please write a issue in our repository.");
+            throw new RuntimeException(ex);
         }
     }
 }
