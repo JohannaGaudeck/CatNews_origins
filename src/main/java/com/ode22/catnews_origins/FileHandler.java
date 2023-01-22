@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import java.awt.Desktop;
+
 /**
  * Class containing all methods interacting with files
  */
@@ -21,9 +23,28 @@ public class FileHandler {
      * @throws IOException in case a problem with opening or writing to the file happens.
      */
     public void saveArticle(Article article) throws IOException {
-        File file = new File("Zeitungsablage/" + LocalDate.now() + ".txt");
+        File file = new File("Zeitungsablage/" + LocalDate.now() + ".md");
         FileWriter myWriter = new FileWriter(file, true);
-        myWriter.write(mapper.writeValueAsString(article));
+        myWriter.write(article.toMarkDownString());
         myWriter.close();
+    }
+
+    /**
+     * Opens the file saved under Zeitungsablage/{todaysDate}.txt
+     * @throws IOException
+     */
+    public void openDailyFile() throws IOException {
+        File file = new File("Zeitungsablage/" + LocalDate.now() + ".md");
+        if (!Desktop.isDesktopSupported()){
+            System.out.println("Desktop is not supported");
+            return;
+        }
+        Desktop desktop = Desktop.getDesktop();
+        if(file.exists()){
+            desktop.open(file);
+        }
+
+
+
     }
 }

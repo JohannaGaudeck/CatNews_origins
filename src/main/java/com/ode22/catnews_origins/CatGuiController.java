@@ -3,6 +3,7 @@ package com.ode22.catnews_origins;
 import com.ode22.catnews_origins.Client.ApaClient;
 import com.ode22.catnews_origins.Client.CatClient;
 import com.ode22.catnews_origins.Dto.Article;
+import com.ode22.catnews_origins.Dto.ArticleHeader;
 import com.ode22.catnews_origins.Dto.ArticleHeaders;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +17,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CatGuiController implements Initializable {
@@ -24,6 +27,8 @@ public class CatGuiController implements Initializable {
     ApaClient apaClient = new ApaClient();
     ArticleHeaders articleHeaders = new ArticleHeaders();
     FileHandler fileHandler = new FileHandler();
+    Datehandler datehandler = new Datehandler();
+
     @FXML
     private Button btnOpenTodaysFile;
 
@@ -72,7 +77,9 @@ public class CatGuiController implements Initializable {
     ObservableList<String> articleHeaderList = FXCollections.observableArrayList();
 
     @FXML
-    private ListView<?> listviewSavedItems;
+    private ListView<String> listviewSavedItems;
+
+    ObservableList<String> savedItemsList = FXCollections.observableArrayList();
 
     @FXML
     private TextField txtMaxArticles;
@@ -84,11 +91,20 @@ public class CatGuiController implements Initializable {
     private VBox vboxLeft;
 
     @FXML
+
     private VBox vboxRight;
 
     @FXML
     void onOpenTodaysFile(ActionEvent event) {
         System.out.println("Open pressed");
+        try {
+            fileHandler.openDailyFile();
+        } catch (IOException e) {
+
+            //In case of an error, we open an alert-window to inform the user
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "The file could not be opened ", ButtonType.OK);
+            alert.showAndWait();
+        }
         //refreshes the random cat picture with a new one
         loadRandomCatImage(imageCat);
 
@@ -99,10 +115,45 @@ public class CatGuiController implements Initializable {
         articleHeaderList.clear();
         listviewAllArticles.setItems(articleHeaderList);
         try {
-            articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10);
+            if(txtTitel.getText().isEmpty()){
+                //In case no title was selected, we open an alert-window to inform the user
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have to select a title", ButtonType.OK);
+                alert.showAndWait();
+
+            }
+           else if(txtMaxArticles.getText().isEmpty() ){
+                if (datePickerStartDate.getValue() == null && datePickerEndDate.getValue() == null){
+                    articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10);
+                } else if (datePickerStartDate.getValue() != null && datePickerEndDate.getValue() != null){
+                    long startDate = datehandler.get_unix_timestamp(String.valueOf(datePickerStartDate.getValue()));
+                    long endDate = datehandler.get_unix_timestamp(String.valueOf(datePickerEndDate.getValue()));
+                    articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(), 10, startDate,endDate);
+                } else {
+                    //In case only one date was selected, we open an alert-window to inform the user
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have to select both dates", ButtonType.OK);
+                    alert.showAndWait();
+                }
+            }
+            else{
+                if (datePickerStartDate.getValue() == null && datePickerEndDate.getValue() == null){
+                    articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(),  Integer.parseInt(txtMaxArticles.getText()));
+                }else if (datePickerStartDate.getValue() != null && datePickerEndDate.getValue() != null){
+                    long startDate = datehandler.get_unix_timestamp(String.valueOf(datePickerStartDate.getValue()));
+                    long endDate = datehandler.get_unix_timestamp(String.valueOf(datePickerEndDate.getValue()));
+                    articleHeaders = apaClient.getArticleHeaders(txtTitel.getText(),  Integer.parseInt(txtMaxArticles.getText()), startDate, endDate);
+                }else {
+                    //In case only one date was selected, we open an alert-window to inform the user
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have to select both dates", ButtonType.OK);
+                    alert.showAndWait();
+                }
+
+            }
             articleHeaders.getErgebnisse().forEach(articleHeader -> articleHeaderList.add(articleHeader.toString()));
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Maximum number of articles must contain numerical characters!", ButtonType.OK);
+            alert.showAndWait();
         }
         //refreshes the random cat picture with a new one
         loadRandomCatImage(imageCat);
@@ -129,6 +180,12 @@ public class CatGuiController implements Initializable {
             //Saves the article in today's file
             fileHandler.saveArticle(article);
 
+            //Saves the article header in the savedItems List
+            savedItemsList.add(article.getTitel());
+
+            //Displays the saved articles
+            listviewSavedItems.setItems(savedItemsList);
+
         }
         //refreshes the random cat picture with a new one
         loadRandomCatImage(imageCat);
@@ -141,11 +198,16 @@ public class CatGuiController implements Initializable {
     }
 
     /**
-     * Starts a new thread that loads a random cat image from thecatapi.com into a ImageView node.
+     * Loads a random cat image from thecatapi.com into a ImageView node.
      * @param location the ImageView node into which the image is to be loaded.
      */
     public void loadRandomCatImage(ImageView location) {
-        new CatClient(location).start();
+        CatClient catClient = new CatClient();
+        try {
+            location.setImage(new Image(catClient.getRandomCat().getUrl()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
