@@ -89,6 +89,7 @@ public class CatGuiController implements Initializable {
     @FXML
     void onOpenTodaysFile(ActionEvent event) {
         System.out.println("Open pressed");
+        //refreshes the random cat picture with a new one
         loadRandomCatImage(imageCat);
 
     }
@@ -103,6 +104,7 @@ public class CatGuiController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        //refreshes the random cat picture with a new one
         loadRandomCatImage(imageCat);
 
     }
@@ -128,6 +130,7 @@ public class CatGuiController implements Initializable {
             fileHandler.saveArticle(article);
 
         }
+        //refreshes the random cat picture with a new one
         loadRandomCatImage(imageCat);
     }
 

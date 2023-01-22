@@ -35,12 +35,11 @@ public class CatClient extends Service<RandomCat>
      * @param location the ImageView location where the picture is supposed to be placed
      */
     public CatClient(ImageView location) {
-        setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent event) {
-                location.setImage(new Image(((RandomCat) event.getSource().getValue()).getUrl()));
-            }
-        });
+       setOnSucceeded(event -> location.setImage(new Image(((RandomCat) event.getSource().getValue()).getUrl())));
+       setOnFailed(event -> {
+           File file = new File("src/main/resources/com/ode22/catnews_origins/503.jpg");
+           location.setImage(new Image(file.toURI().toString()));
+       });
     }
 
     /**
