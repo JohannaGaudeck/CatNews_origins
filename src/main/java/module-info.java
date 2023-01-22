@@ -5,6 +5,7 @@ module com.ode22.catnews_origins {
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
     requires com.fasterxml.jackson.databind;
+    requires java.desktop;
 
     opens com.ode22.catnews_origins to javafx.fxml;
     opens com.ode22.catnews_origins.Dto to javafx.fxml;

@@ -86,11 +86,20 @@ public class CatGuiController implements Initializable {
     private VBox vboxLeft;
 
     @FXML
+    
     private VBox vboxRight;
 
     @FXML
     void onOpenTodaysFile(ActionEvent event) {
         System.out.println("Open pressed");
+        try {
+            fileHandler.openDailyFile();
+        } catch (IOException e) {
+
+            //In case of an error, we open an alert-window to inform the user
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "The file could not be opened ", ButtonType.OK);
+            alert.showAndWait();
+        }
 
     }
     @FXML
