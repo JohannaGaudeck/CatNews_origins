@@ -18,7 +18,7 @@ import javafx.scene.image.ImageView;
 /**
  * Client containing all logic for communication with thecatapi.com
  * Documentation at https://developers.thecatapi.com/
- * Extends the Service<> Class from the javafx.concurrent.* package handle GUI updates with multiple threads.
+ * Extends the Service class from the javafx.concurrent.* package handle GUI updates with multiple threads.
  */
 public class CatClient extends Service<RandomCat>
 {

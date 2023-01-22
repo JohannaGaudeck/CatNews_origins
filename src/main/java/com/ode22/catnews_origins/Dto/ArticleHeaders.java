@@ -3,6 +3,9 @@ package com.ode22.catnews_origins.Dto;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class for article headers received from the APA api.
+ */
 public class ArticleHeaders {
     Map<String, Object> meta;
     List<ArticleHeader> ergebnisse;

@@ -1,4 +1,4 @@
-package com.ode22.catnews_origins;
+package com.ode22.catnews_origins.Handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

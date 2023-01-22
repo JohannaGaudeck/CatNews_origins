@@ -12,4 +12,6 @@ module com.ode22.catnews_origins {
     exports com.ode22.catnews_origins;
     exports com.ode22.catnews_origins.Dto;
     exports com.ode22.catnews_origins.Client;
+    exports com.ode22.catnews_origins.Handler;
+    opens com.ode22.catnews_origins.Handler to javafx.fxml;
 }
