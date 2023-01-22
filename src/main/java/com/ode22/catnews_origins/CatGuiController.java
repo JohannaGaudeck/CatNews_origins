@@ -3,6 +3,7 @@ package com.ode22.catnews_origins;
 import com.ode22.catnews_origins.Client.ApaClient;
 import com.ode22.catnews_origins.Client.CatClient;
 import com.ode22.catnews_origins.Dto.Article;
+import com.ode22.catnews_origins.Dto.ArticleHeader;
 import com.ode22.catnews_origins.Dto.ArticleHeaders;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,16 +19,14 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
-
-
 
 public class CatGuiController implements Initializable {
 
     ApaClient apaClient = new ApaClient();
     ArticleHeaders articleHeaders = new ArticleHeaders();
     FileHandler fileHandler = new FileHandler();
-
     Datehandler datehandler = new Datehandler();
 
     @FXML
@@ -92,7 +91,7 @@ public class CatGuiController implements Initializable {
     private VBox vboxLeft;
 
     @FXML
-    
+
     private VBox vboxRight;
 
     @FXML
@@ -106,13 +105,13 @@ public class CatGuiController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "The file could not be opened ", ButtonType.OK);
             alert.showAndWait();
         }
+        //refreshes the random cat picture with a new one
+        loadRandomCatImage(imageCat);
 
     }
     @FXML
     void onSearch(ActionEvent event){
         System.out.println("Search pressed");
-
-
         articleHeaderList.clear();
         listviewAllArticles.setItems(articleHeaderList);
         try {
@@ -156,6 +155,8 @@ public class CatGuiController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Maximum number of articles must contain numerical characters!", ButtonType.OK);
             alert.showAndWait();
         }
+        //refreshes the random cat picture with a new one
+        loadRandomCatImage(imageCat);
 
     }
 
@@ -186,6 +187,8 @@ public class CatGuiController implements Initializable {
             listviewSavedItems.setItems(savedItemsList);
 
         }
+        //refreshes the random cat picture with a new one
+        loadRandomCatImage(imageCat);
     }
 
     @Override
@@ -195,17 +198,11 @@ public class CatGuiController implements Initializable {
     }
 
     /**
-     * Loads a random cat image from thecatapi.com into a ImageView node.
+     * Starts a new thread that loads a random cat image from thecatapi.com into a ImageView node.
      * @param location the ImageView node into which the image is to be loaded.
      */
     public void loadRandomCatImage(ImageView location) {
-        CatClient catClient = new CatClient();
-        try {
-            location.setImage(new Image(catClient.getRandomCat().getUrl()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        new CatClient(location).start();
     }
 
 
