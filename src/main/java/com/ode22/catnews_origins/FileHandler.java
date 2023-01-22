@@ -34,7 +34,7 @@ public class FileHandler {
      * @throws IOException
      */
     public void openDailyFile() throws IOException {
-        File file = new File("Zeitungsablage/" + LocalDate.now() + ".txt");
+        File file = new File("Zeitungsablage/" + LocalDate.now() + ".md");
         if (!Desktop.isDesktopSupported()){
             System.out.println("Desktop is not supported");
             return;
